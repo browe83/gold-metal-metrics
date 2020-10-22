@@ -12,7 +12,7 @@ const createCountryTable = () => {
     code TEXT NOT NULL,
     gdp INTEGER,
     population INTEGER
-  )`
+  );`
 };
 
 /*
@@ -31,7 +31,7 @@ const createGoldMedalTable = () => {
     sport TEXT NOT NULL,
     discipline TEXT NOT NULL,
     event TEXT NOT NULL
-  )`;
+  );`
 };
 
 /*
@@ -39,7 +39,8 @@ Returns a SQL query string that will find the number of gold medals for the give
 */
 
 const goldMedalNumber = country => {
-    return;
+    return `SELECT COUNT(*) FROM GoldMedal
+    WHERE country = '${country}';`;
 };
 
 /*
