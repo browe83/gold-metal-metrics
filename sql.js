@@ -162,7 +162,25 @@ optionally ordered by the given field in the specified direction.
 */
 
 const orderedMedals = (country, field, sortAscending) => {
-  return;
+  if(field) {
+    if(sortAscending) {
+      return `SELECT ${field}, count(*) as count
+        FROM GoldMedal
+        WHERE country = '${country}' 
+        GROUP BY 1
+        ORDER BY 2 ASC;`
+    } else {
+      return `SELECT ${field}, count(*) as count
+        FROM GoldMedal
+        WHERE country = '${country}' 
+        GROUP BY 1
+        ORDER BY 2 DESC;`
+    }
+  } else {
+    return `SELECT count(*) as count
+      FROM GoldMedal
+      WHERE country = '${country}';`
+  }
 };
 
 /*
@@ -173,7 +191,18 @@ aliased as 'percent'. Optionally ordered by the given field in the specified dir
 */
 
 const orderedSports = (country, field, sortAscending) => {
-  return;
+  let orderByString = ``;
+  if(field) {
+    if (sortAscending) {
+      orderByString = `ORDER BY ${field} ASC`;
+    } else {
+      orderByString = `ORDER BY ${field} DESC`;
+    }
+  }
+  return `SELECT sport, COUNT(sport) AS COUNT, (COUNT(sport)*100 / 
+      (SELECT COUNT(*) FROM GoldMedal WHERE country = '${country}')) AS percent
+      FROM GoldMedal WHERE country = '${country}' GROUP BY sport ${orderByString}`
+
 };
 
 module.exports = {
